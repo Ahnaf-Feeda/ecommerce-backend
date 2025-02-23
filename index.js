@@ -5,6 +5,7 @@ const app = express()
 const router = require('./routes')
 const dbConnect = require('./config/db')
 dbConnect()
+app.use(express.json())
 app.use(router)
 
 app.listen(port, ()=>{

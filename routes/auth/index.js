@@ -1,11 +1,11 @@
 const express = require('express')
+const SignupController = require('../../controllers/auth/auth')
 const router = express.Router()
-router.use(express.json())
-const signup = require('../')
+
 
 
 // localhost:3000/auth/signup
 
-router.post('/signup')
+router.post('/signup', SignupController)
 
 module.exports = router
