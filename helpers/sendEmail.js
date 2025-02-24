@@ -13,7 +13,7 @@ async function sendEmail(email, OTP){
         to: email, // list of receivers
         subject: "OTP verification for Fashion Flourish", // Subject line
         text: OTP, // plain text body
-        html: "<b>OTP</b>", // html body
+        html: `<b>Your OTP is ${OTP}</b>`, // html body
       });
 }
 

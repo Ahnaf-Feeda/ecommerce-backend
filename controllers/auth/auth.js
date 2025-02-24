@@ -21,6 +21,14 @@ async function SignupController(req, res) {
         });
         await user.save();
         sendEmail(email, OTP)
+
+// OTP
+        user.otp=OTP
+        await user.save()
+        setTimeout( async () => {
+          user.otp=null
+          await user.save()
+        }, 180000);
         res
           .status(201)
           .json({ msg: "User creation successfull", success: true });
