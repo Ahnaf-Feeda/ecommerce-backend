@@ -15,7 +15,7 @@ async function SignupController(req, res) {
       let existingemail = await UserModel.findOne({ email });
       let existingnumber = await UserModel.findOne({ phone });
 
-      if (!existingemail) {
+      if (!existingemail && !existingnumber) {
         bcrypt.hash(password, saltRounds, async function (err, hash) {
           // Store hash in your password DB.
           let user = new UserModel({
@@ -87,14 +87,31 @@ async function LoginController(req, res) {
   try {
     let existinguser = await UserModel.findOne({email})
     if(existinguser){
-      
+      if(existinguser.isverify == true){
+        bcrypt.compare(password, existinguser.password,async function(err, result) {
+          if (result == true){
+            let user = await UserModel.findOne({email}).select("-password")
+            return res.status(200).json({
+              success: true,
+              msg: "Login Successfull",
+              data: user
+            })
+          }else{
+            res.status(500).json({ msg: 'Password does not match', success: false });
+          }
+      });
+      }else{
+        res.status(500).json({ msg: 'Account not verified', success: false });
+      }
     }else{
-
+      res.status(404).json({ msg: 'Email not found', success: false });
     }
   } catch (error) {
     
+    res.status(500).json({ msg: error, success: false });
+    
   }
-  res.status(200).json({email, password})
+  
 }
 
 
